@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+
+    <title>Routine Tracker</title>
+</head>
+
+<body>
+    <button class="btn" id="expense" onclick="window.location.href='/expense.html'">Expense
+        manager</button>
+    <div class="container my-4">
+        <h2 class="text-center">Productivity Tracker</h2>
+        <form id="forms">
+            <div class="form-group">
+                    <label for="title">Objective</label>
+                <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+                
+            </div>
+
+            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker">
+                <label for="dat">Enter Date</label>
+                <input placeholder="Select date" type="date" id="dat" class="form-control">
+            </div>
+            <div class="md-form my-4">
+                <label for="tim">Enter your time</label>
+                <input type="time" id="tim" class="form-control">
+            </div>
+            <div class="md-form my-4">
+                <label for="minutes">Enter time required in minutes for the task</label>
+                <input type="number" id="minutes" class="form-control">
+            </div> 
+            <div class="toggle">
+                Is the task compulsory?
+                <label for="comp" class="switch">
+                    <input id="comp" type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </form>
+        <div class="buttons">
+            <button id="add" class="btn ">Add to list</button>
+            <button id="clear" class="btn " onclick="clearStorage()">Clear list</button>
+        </div>
+
+
+        <div id="items" class="my-4">
+            <div class="tableheading">
+                <h2>Your Items</h2>
+                <h3>Overall time utilised: <span id="minu">0</span> minutes</h3>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">SNo</th>
+                        <th scope="col">Item Title</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Minutes taken</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Task</td>
+                        <td>Date</td>
+                        <td>time</td>
+                        <td>minutes required</td>
+                        <td><button class="but" id="complete">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                            <button class="but" id="del"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                </svg></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script src="./main.js"> </script>
+        
+   
+</body>
+
+</html>
+
