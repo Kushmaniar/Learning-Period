@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #F6624C  ;
+            margin: 0;
+            padding: 0;
+        }
+        .dark-mode {
+            background-color: #410C04  ;
+            color: white;
+        }
+        .btn{
+            border-radius: 10px;
+            border: 3px solid black;
+        }
+
+
+        .filterbtn,
+        .filterbtn2 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="text-center m-auto p-3">
+        COWIN TRACKER
+    </h2>
+
+    <div class="formentry d-flex flex-column justify-content-center align-items-center m-auto p-2">
+        <label for="pin">PINCODE </label>
+        <input type="text" id="pin" class="form-control m-2 border border-dark border-3" style="width: 25%;">
+        <label for="date">DATE </label>
+        <input type="text" id="date" class="form-control m-2 border border-dark border-3" style="width: 25%;">
+        <div>
+            <button class="searchBtn btn btn-light m-2 ">SEARCH</button>
+            <button class="searchOtr btn btn-light m-2">SEARCH ANOTHER PIN</button>
+
+        </div>
+    </div>
+    <div class="filter d-grid gap-2 d-md-flex justify-content-center ">
+
+        <button class="btn btn-light m-3 p-2 " id="filterbtn" type="button">Filter by Age-18</button>
+        <button class="btn btn-light m-3 p-2 " id="filterbtn2" type="button">Free</button>
+        <button class="btn btn-light m-3 p-2 " id="filterbtn3" type="button">Paid</button>
+        <button class="btn btn-light m-3 p-2 " id="filterbtn4" type="button">Filter by Age-45</button>
+        <button onclick="myFunction()" class="btn btn-light m-3 p-2 " id="dark" type="button">Dark Mode</button>
+    </div>
+
+    <div id="list" class="m-auto d-flex flex-row flex-wrap justify-content-center align-items-center">
+
+        
+    </div>
+    
+    <div id="filtercost" class="m-auto d-flex flex-row flex-wrap justify-content-center align-items-center"></div>
+    <div id="age18" class="m-auto d-flex flex-row flex-wrap justify-content-center align-items-center" ></div>
+    <div id="age45" class="m-auto d-flex flex-row flex-wrap justify-content-center align-items-center" ></div>
+    <div id="filtercost2" class="m-auto d-flex flex-row flex-wrap justify-content-center align-items-center"></div>
+    <script>
+        function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+}
+
+        const pin = document.querySelector('#pin');
+        const date = document.querySelector('#date');
+        const btn = document.querySelector('.searchBtn');
+        const btn2 = document.querySelector('.searchOtr');
+        let filter = document.querySelector('#filterbtn');
+        let filter2 = document.querySelector('#filterbtn2');
+        let filter3 = document.querySelector('#filterbtn3');
+        let filter4 = document.querySelector('#filterbtn4');
+
+
+        const getData = async () => {
+            let apiurl = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pin.value}&date=${date.value}`;
+            const response = await fetch(apiurl);
+            const data = await response.json();
+            const session = data.sessions;
+            console.log(session);
+            getBtn();
+            session.forEach(fee => {
+                let card = document.createElement('div');
+                let list = document.querySelector('#list');
+                card.innerHTML = `
+                <div class="card m-2 p-2 rounded shadow p-3 mb-5 bg-body rounded align-self-stretch" style="width: 22rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item fw-bolder">${fee.name}</li>
+                        <li class="list-group-item">Center ID : ${fee.center_id}</li>
+                        <li class="list-group-item">Vaccine ${fee.vaccine}</li>
+                        <li class="list-group-item">Fees : Rs ${fee.fee}</li>
+                        <li class="list-group-item">Slots : ${fee.slots}</li>
+                        </ul>
+                        </div>
+                        `;
+
+
+                list.appendChild(card);
+
+                pin.value = '';
+                date.value = '';
+            }); 
+            //Filter Free
+            filter2.addEventListener('click', () => {
+                while(list.firstChild)
+                {
+                    list.removeChild(list.firstChild);
+                }
+                const cost = session.filter(paid => paid.fee == "0")
+                
+                
+                cost.forEach(paid => {
+
+                            let card1 = document.createElement('div');
+                            let filter = document.querySelector('#filtercost');
+
+                            card1.innerHTML = `
+                       <div class="card m-2 p-2 rounded shadow p-3 mb-5 bg-body rounded align-self-stretch" style="width: 22rem;">
+                       <ul class="list-group list-group-flush">
+                        <li class="list-group-item fw-bolder">${paid.name}</li>
+                        <li class="list-group-item">Center ID : ${paid.center_id}</li>
+                        <li class="list-group-item">Vaccine ${paid.vaccine}</li>
+                        <li class="list-group-item">Fees : Rs ${paid.fee}</li>
+                        <li class="list-group-item">Slots : ${paid.slots}</li>
+                        </ul>
+                        </div>
+                        `;
+
+                       filter.appendChild(card1);
+                    
+                    
+                    
+
+
+                })
+            
+            })
+            //Filter 18
+            filter.addEventListener('click', () => {
+                while(list.firstChild)
+                {
+                    list.removeChild(list.firstChild);
+                }
+                const limit = session.filter(age => age.min_age_limit == "18")
+                
+                
+                limit.forEach(age => {
+
+                            let card2 = document.createElement('div');
+                            let minage = document.querySelector('#age18');
+
+                            card2.innerHTML = `
+                       <div class="card m-2 p-2 rounded shadow p-3 mb-5 bg-body rounded align-self-stretch" style="width: 22rem;">
+                       <ul class="list-group list-group-flush">
+                        <li class="list-group-item fw-bolder">${age.name}</li>
+                        <li class="list-group-item">Center ID : ${age.center_id}</li>
+                        <li class="list-group-item">Vaccine ${age.vaccine}</li>
+                        <li class="list-group-item">Fees : Rs ${age.fee}</li>
+                        <li class="list-group-item">Slots : ${age.slots}</li>
+                        </ul>
+                        </div>
+                        `;
+
+                       minage.appendChild(card2);
+                    
+                    
+                    
+
+
+                })
+            
+            })
+            //Filter 45
+            filter4.addEventListener('click', () => {
+                while(list.firstChild)
+                {
+                    list.removeChild(list.firstChild);
+                }
+                const limit = session.filter(age => age.min_age_limit == "45")
+                
+                
+                limit.forEach(age => {
+
+                            let card3 = document.createElement('div');
+                            let minage = document.querySelector('#age45');
+
+                            card2.innerHTML = `
+                       <div class="card m-2 p-2 rounded shadow p-3 mb-5 bg-body rounded align-self-stretch" style="width: 22rem;">
+                       <ul class="list-group list-group-flush">
+                        <li class="list-group-item fw-bolder">${age.name}</li>
+                        <li class="list-group-item">Center ID : ${age.center_id}</li>
+                        <li class="list-group-item">Vaccine ${age.vaccine}</li>
+                        <li class="list-group-item">Fees : Rs ${age.fee}</li>
+                        <li class="list-group-item">Slots : ${age.slots}</li>
+                        </ul>
+                        </div>
+                        `;
+
+                       minage.appendChild(card3);
+                    
+                    
+                    
+
+
+                })
+            
+            })
+            //Filter Paid
+            filter3.addEventListener('click', () => {
+                while(list.firstChild)
+                {
+                    list.removeChild(list.firstChild);
+                }
+                const cost = session.filter(paid => paid.fee != "0")
+                
+                
+                cost.forEach(paid => {
+
+                            let card4 = document.createElement('div');
+                            let filter = document.querySelector('#filtercost2');
+
+                            card1.innerHTML = `
+                       <div class="card m-2 p-2 rounded shadow p-3 mb-5 bg-body rounded align-self-stretch" style="width: 22rem;">
+                       <ul class="list-group list-group-flush">
+                        <li class="list-group-item fw-bolder">${paid.name}</li>
+                        <li class="list-group-item">Center ID : ${paid.center_id}</li>
+                        <li class="list-group-item">Vaccine ${paid.vaccine}</li>
+                        <li class="list-group-item">Fees : Rs ${paid.fee}</li>
+                        <li class="list-group-item">Slots : ${paid.slots}</li>
+                        </ul>
+                        </div>
+                        `;
+
+                       filter.appendChild(card4);
+                    
+                    
+                    
+
+
+                })
+            
+            })
+
+        }
+
+        function getBtn() {
+            filter.style.display = "inline-block"
+            filter2.style.display = "inline-block"
+        }
+
+
+        btn.addEventListener('click', () => {
+            getData();
+        })
+
+        btn2.addEventListener('click', () => {
+            location.reload();
+        })
+
+
+
+    </script>
+</body>
+
+</html>
